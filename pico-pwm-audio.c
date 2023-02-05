@@ -53,6 +53,10 @@ void gpio_callback(uint gpio, uint32_t events) {
     // so we can print it
     gpio_event_string(event_str, events);
     printf("GPIO %d %s\n", gpio, event_str);
+    if (event_str == EDGE_RISE) {
+      pwm_config_set_clkdiv_int_frac()
+      
+    }
 }
 int main(void) {
     /* Overclocking for fun but then also so the system clock is a 
@@ -140,18 +144,12 @@ int main(void) {
 
     pwm_set_gpio_level(AUDIO_PIN, 0);
 
-    printf("Hello, world!\n");
-    gpio_put(LED_PIN, 1);
-    sleep_ms(250);
-    gpio_put(LED_PIN, 0);
-    sleep_ms(250);
-
     while(1) {
-        __wfi(); // Wait for Interrupt
         gpio_put(LED_PIN, 1);
         sleep_ms(250);
         gpio_put(LED_PIN, 0);
         sleep_ms(250);
+        __wfi(); // Wait for Interrupt
     }
     return 0;
 }
