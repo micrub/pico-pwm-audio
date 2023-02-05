@@ -28,8 +28,8 @@ add_executable(pico-pwm-audio pico-pwm-audio.c )
 pico_set_program_name(pico-pwm-audio "pico-pwm-audio")
 pico_set_program_version(pico-pwm-audio "0.1")
 
-pico_enable_stdio_uart(pico-pwm-audio 1)
-pico_enable_stdio_usb(pico-pwm-audio 0)
+pico_enable_stdio_uart(pico-pwm-audio 0)
+pico_enable_stdio_usb(pico-pwm-audio 1)
 
 # Add the standard library to the build
 target_link_libraries(pico-pwm-audio pico_stdlib)

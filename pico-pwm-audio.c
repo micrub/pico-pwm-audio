@@ -7,6 +7,10 @@
 // Audio PIN is to match some of the design guide shields. 
 #define AUDIO_PIN 28  // you can change this to whatever you like
 
+#define C_PIN 0  // you can change this to whatever you like
+#define D_PIN 1  // you can change this to whatever you like
+#define E_PIN 2  // you can change this to whatever you like
+
 /* 
  * This include brings in static arrays which contain audio samples. 
  * if you want to know how to make these please see the python code
@@ -41,6 +45,9 @@ int main(void) {
      * multiple of typical audio sampling rates.
      */
     stdio_init_all();
+    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
     set_sys_clock_khz(176000, true); 
     gpio_set_function(AUDIO_PIN, GPIO_FUNC_PWM);
 
@@ -72,7 +79,17 @@ int main(void) {
 
     pwm_set_gpio_level(AUDIO_PIN, 0);
 
+    printf("Hello, world!\n");
+    gpio_put(LED_PIN, 1);
+    sleep_ms(250);
+    gpio_put(LED_PIN, 0);
+    sleep_ms(250);
+    sleep_ms(1000);
     while(1) {
         __wfi(); // Wait for Interrupt
+        gpio_put(LED_PIN, 1);
+        sleep_ms(250);
+        gpio_put(LED_PIN, 0);
+        sleep_ms(250);
     }
 }
