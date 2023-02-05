@@ -7,7 +7,14 @@
 // Audio PIN is to match some of the design guide shields. 
 #define AUDIO_PIN 28  // you can change this to whatever you like
 
-#define C_PIN 15  // you can change this to whatever you like
+#define C_PIN 8
+#define D_PIN 9
+#define E_PIN 10
+#define F_PIN 11
+#define G_PIN 12
+#define A_PIN 13
+#define B_PIN 14
+#define C1_PIN 15
 
 /* 
  * This include brings in static arrays which contain audio samples. 
@@ -55,10 +62,52 @@ int main(void) {
     const uint LED_PIN = PICO_DEFAULT_LED_PIN;
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
     gpio_init(C_PIN);
     gpio_set_dir(C_PIN,GPIO_IN);
     gpio_pull_down(C_PIN);
     gpio_set_irq_enabled_with_callback(C_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+
+    gpio_init(D_PIN);
+    gpio_set_dir(D_PIN,GPIO_IN);
+    gpio_pull_down(D_PIN);
+    gpio_set_irq_enabled_with_callback(D_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(E_PIN);
+    gpio_set_dir(E_PIN,GPIO_IN);
+    gpio_pull_down(E_PIN);
+    gpio_set_irq_enabled_with_callback(E_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(F_PIN);
+    gpio_set_dir(F_PIN,GPIO_IN);
+    gpio_pull_down(F_PIN);
+    gpio_set_irq_enabled_with_callback(F_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(D_PIN);
+    gpio_set_dir(D_PIN,GPIO_IN);
+    gpio_pull_down(D_PIN);
+    gpio_set_irq_enabled_with_callback(D_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(G_PIN);
+    gpio_set_dir(G_PIN,GPIO_IN);
+    gpio_pull_down(G_PIN);
+    gpio_set_irq_enabled_with_callback(G_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(A_PIN);
+    gpio_set_dir(A_PIN,GPIO_IN);
+    gpio_pull_down(A_PIN);
+    gpio_set_irq_enabled_with_callback(A_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(B_PIN);
+    gpio_set_dir(B_PIN,GPIO_IN);
+    gpio_pull_down(B_PIN);
+    gpio_set_irq_enabled_with_callback(B_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
+    gpio_init(C1_PIN);
+    gpio_set_dir(C1_PIN,GPIO_IN);
+    gpio_pull_down(C1_PIN);
+    gpio_set_irq_enabled_with_callback(C1_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
 
     set_sys_clock_khz(176000, true); 
     gpio_set_function(AUDIO_PIN, GPIO_FUNC_PWM);
