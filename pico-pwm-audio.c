@@ -7,9 +7,7 @@
 // Audio PIN is to match some of the design guide shields. 
 #define AUDIO_PIN 28  // you can change this to whatever you like
 
-#define C_PIN 0  // you can change this to whatever you like
-#define D_PIN 1  // you can change this to whatever you like
-#define E_PIN 2  // you can change this to whatever you like
+#define C_PIN 15  // you can change this to whatever you like
 
 /* 
  * This include brings in static arrays which contain audio samples. 
@@ -39,7 +37,16 @@ void pwm_interrupt_handler() {
         wav_position = 0;
     }
 }
+static char event_str[128];
 
+void gpio_event_string(char *buf, uint32_t events);
+
+void gpio_callback(uint gpio, uint32_t events) {
+    // Put the GPIO event(s) that just happened into event_str
+    // so we can print it
+    gpio_event_string(event_str, events);
+    printf("GPIO %d %s\n", gpio, event_str);
+}
 int main(void) {
     /* Overclocking for fun but then also so the system clock is a 
      * multiple of typical audio sampling rates.
@@ -48,6 +55,11 @@ int main(void) {
     const uint LED_PIN = PICO_DEFAULT_LED_PIN;
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_init(C_PIN);
+    gpio_set_dir(C_PIN,GPIO_IN);
+    gpio_pull_down(C_PIN);
+    gpio_set_irq_enabled_with_callback(C_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
+
     set_sys_clock_khz(176000, true); 
     gpio_set_function(AUDIO_PIN, GPIO_FUNC_PWM);
 
@@ -84,7 +96,7 @@ int main(void) {
     sleep_ms(250);
     gpio_put(LED_PIN, 0);
     sleep_ms(250);
-    sleep_ms(1000);
+
     while(1) {
         __wfi(); // Wait for Interrupt
         gpio_put(LED_PIN, 1);
@@ -92,4 +104,33 @@ int main(void) {
         gpio_put(LED_PIN, 0);
         sleep_ms(250);
     }
+    return 0;
+}
+
+static const char *gpio_irq_str[] = {
+        "LEVEL_LOW",  // 0x1
+        "LEVEL_HIGH", // 0x2
+        "EDGE_FALL",  // 0x4
+        "EDGE_RISE"   // 0x8
+};
+
+void gpio_event_string(char *buf, uint32_t events) {
+    for (uint i = 0; i < 4; i++) {
+        uint mask = (1 << i);
+        if (events & mask) {
+            // Copy this event string into the user string
+            const char *event_str = gpio_irq_str[i];
+            while (*event_str != '\0') {
+                *buf++ = *event_str++;
+            }
+            events &= ~mask;
+
+            // If more events add ", "
+            if (events) {
+                *buf++ = ',';
+                *buf++ = ' ';
+            }
+        }
+    }
+    *buf++ = '\0';
 }
