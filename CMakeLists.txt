@@ -36,12 +36,13 @@ target_link_libraries(pico-pwm-audio pico_stdlib)
 
 # Add any user requested libraries
 target_link_libraries(pico-pwm-audio
-        hardware_dma
-        hardware_pio
-        hardware_timer
-        hardware_clocks
-        hardware_pwm
-        )
+  pico_bootsel_via_double_reset
+  hardware_dma
+  hardware_pio
+  hardware_timer
+  hardware_clocks
+  hardware_pwm
+)
 
 pico_add_extra_outputs(pico-pwm-audio)
 
