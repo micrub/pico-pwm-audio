@@ -67,60 +67,14 @@ int main(void) {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
-    gpio_init(C_PIN);
-    gpio_set_dir(C_PIN,GPIO_IN);
-    gpio_pull_down(C_PIN);
-    gpio_set_irq_enabled_with_callback(C_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-
-    gpio_init(D_PIN);
-    gpio_set_dir(D_PIN,GPIO_IN);
-    gpio_pull_down(D_PIN);
-    gpio_set_irq_enabled_with_callback(D_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(E_PIN);
-    gpio_set_dir(E_PIN,GPIO_IN);
-    gpio_pull_down(E_PIN);
-    gpio_set_irq_enabled_with_callback(E_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(F_PIN);
-    gpio_set_dir(F_PIN,GPIO_IN);
-    gpio_pull_down(F_PIN);
-    gpio_set_irq_enabled_with_callback(F_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(D_PIN);
-    gpio_set_dir(D_PIN,GPIO_IN);
-    gpio_pull_down(D_PIN);
-    gpio_set_irq_enabled_with_callback(D_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(G_PIN);
-    gpio_set_dir(G_PIN,GPIO_IN);
-    gpio_pull_down(G_PIN);
-    gpio_set_irq_enabled_with_callback(G_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(A_PIN);
-    gpio_set_dir(A_PIN,GPIO_IN);
-    gpio_pull_down(A_PIN);
-    gpio_set_irq_enabled_with_callback(A_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(B_PIN);
-    gpio_set_dir(B_PIN,GPIO_IN);
-    gpio_pull_down(B_PIN);
-    gpio_set_irq_enabled_with_callback(B_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
-    gpio_init(C1_PIN);
-    gpio_set_dir(C1_PIN,GPIO_IN);
-    gpio_pull_down(C1_PIN);
-    gpio_set_irq_enabled_with_callback(C1_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
-
     set_sys_clock_khz(176000, true); 
     gpio_set_function(AUDIO_PIN, GPIO_FUNC_PWM);
 
-    int audio_pin_slice = pwm_gpio_to_slice_num(AUDIO_PIN);
+    int slice = pwm_gpio_to_slice_num(AUDIO_PIN);
 
     // Setup PWM interrupt to fire when PWM cycle is complete
-    pwm_clear_irq(audio_pin_slice);
-    pwm_set_irq_enabled(audio_pin_slice, true);
+    pwm_clear_irq(slice);
+    pwm_set_irq_enabled(slice, true);
     // set the handle function above
     irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
     irq_set_enabled(PWM_IRQ_WRAP, true);
@@ -140,7 +94,7 @@ int main(void) {
      */
     pwm_config_set_clkdiv(&config, 8.0f); 
     pwm_config_set_wrap(&config, 250); 
-    pwm_init(audio_pin_slice, &config, true);
+    pwm_init(slice, &config, true);
 
     pwm_set_gpio_level(AUDIO_PIN, 0);
 
