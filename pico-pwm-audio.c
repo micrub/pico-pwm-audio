@@ -16,7 +16,7 @@ int wav_position = 0;
  * 
  */
 void pwm_interrupt_handler() {
-    pwm_clear_irq(pwm_gpio_to_slice_num(BUZZ_PIN9));    
+    pwm_clear_irq(pwm_gpio_to_slice_num(BUZZPIN));    
     if (wav_position < (WAV_DATA_LENGTH<<3) - 1) { 
         // set pwm level 
         // allow the pwm value to repeat for 8 cycles this is >>3 
@@ -47,7 +47,7 @@ int main(void) {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
-    set_sys_clock_khz(176000, true); 
+    /*set_sys_clock_khz(176000, true); */
     gpio_set_function(BUZZPIN, GPIO_FUNC_PWM);
 
     int slice = pwm_gpio_to_slice_num(BUZZPIN);
