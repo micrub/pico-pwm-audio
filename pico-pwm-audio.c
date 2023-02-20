@@ -3,7 +3,7 @@
 #include "hardware/irq.h"  // interrupts
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
-#include "sample.h"
+#include "ring.h"
 #define BUZZPIN 15 
 int wav_position = 0;
 
