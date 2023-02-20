@@ -4,7 +4,7 @@
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
 #include "sample.h"
-#define BUZZ_PIN9 15 
+#define BUZZPIN 15 
 int wav_position = 0;
 
 /*
@@ -20,7 +20,7 @@ void pwm_interrupt_handler() {
     if (wav_position < (WAV_DATA_LENGTH<<3) - 1) { 
         // set pwm level 
         // allow the pwm value to repeat for 8 cycles this is >>3 
-        pwm_set_gpio_level(BUZZ_PIN9, WAV_DATA[wav_position>>3]);  
+        pwm_set_gpio_level(BUZZPIN, WAV_DATA[wav_position>>3]);  
         wav_position++;
     } else {
         // reset to start
@@ -48,9 +48,9 @@ int main(void) {
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
     set_sys_clock_khz(176000, true); 
-    gpio_set_function(BUZZ_PIN9, GPIO_FUNC_PWM);
+    gpio_set_function(BUZZPIN, GPIO_FUNC_PWM);
 
-    int slice = pwm_gpio_to_slice_num(BUZZ_PIN9);
+    int slice = pwm_gpio_to_slice_num(BUZZPIN);
 
     // Setup PWM interrupt to fire when PWM cycle is complete
     pwm_clear_irq(slice);
@@ -76,7 +76,7 @@ int main(void) {
     pwm_config_set_wrap(&config, 250); 
     pwm_init(slice, &config, true);
 
-    pwm_set_gpio_level(BUZZ_PIN9, 0);
+    pwm_set_gpio_level(BUZZPIN, 0);
 
     while(1) {
         gpio_put(LED_PIN, 1);
