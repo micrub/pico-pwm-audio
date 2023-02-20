@@ -53,10 +53,6 @@ void gpio_callback(uint gpio, uint32_t events) {
     // so we can print it
     gpio_event_string(event_str, events);
     printf("GPIO %d %s\n", gpio, event_str);
-    if (event_str == EDGE_RISE) {
-      pwm_config_set_clkdiv_int_frac()
-      
-    }
 }
 int main(void) {
     /* Overclocking for fun but then also so the system clock is a 
